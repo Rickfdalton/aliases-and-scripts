@@ -1,0 +1,31 @@
+# If you run the command open-issue ISSUE-1234, the function will:
+# Check if the folder /Users/username/workstation/Tickets/ISSUE exists, and create it if necessary.
+# Create a subfolder /Users/username/workstation/Tickets/ISSUE/ISSUE-1234.
+# Navigate into that subfolder and open it using the appropriate file manager.
+
+local base_folder="/Users/username/workstation/Tickets/"  # Set your base folder path here
+
+local issue_name="$1"
+local issue_folder="${base_folder}/${issue_name%%-*}"  # Extracts the portion before the first hyphen
+local subfolder="${issue_folder}/${issue_name}"
+
+if [ ! -d "$issue_folder" ]; then
+    mkdir -p "$issue_folder"
+fi
+
+cd "$issue_folder" || return 1
+
+if [ ! -d "$subfolder" ]; then
+    mkdir -p "$subfolder"
+fi
+
+cd "$subfolder" || return 1
+
+# Open the folder using your preferred file manager, e.g., 'open' for macOS or 'xdg-open' for Linux
+if command -v open &> /dev/null; then
+    open .
+elif command -v xdg-open &> /dev/null; then
+    xdg-open .
+else
+    echo "Unable to open file manager. Please open the folder manually: $subfolder"
+fi

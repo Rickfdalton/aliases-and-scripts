@@ -1,0 +1,48 @@
+# Set Java version paths
+export JAVA_17_HOME="/opt/homebrew/opt/openjdk@17"
+export JAVA_11_HOME="/opt/homebrew/opt/openjdk@11"
+export JAVA_8_HOME="/Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home"
+
+# Function to switch Java versions
+switch_java_home() {
+    case $1 in
+        j8)
+            export JAVA_HOME=$JAVA_8_HOME
+            ;;
+        j11)
+            export JAVA_HOME=$JAVA_11_HOME
+            ;;
+        j17)
+            export JAVA_HOME=$JAVA_17_HOME
+            ;;
+        *)
+            echo "Usage: switch_java_home {j8|j11|j17}"
+            return 1
+            ;;
+    esac
+    echo "JAVA_HOME switched to $JAVA_HOME"
+}
+
+# Aliases to call the function for quick switching
+alias j8='switch_java_home j8'
+alias j11='switch_java_home j11'
+alias j17='switch_java_home j17'
+
+
+# save, open zshrc config
+alias env-up='source ~/.zshrc'
+alias env-edit='code ~/.zshrc'
+
+# Open Tools
+# open jar analyser tool. Download from : http://java-decompiler.github.io
+alias open-jar='java -jar /Users/username/Downloads/tools/jd-gui-1.6.6.jar'
+
+# open thread dump analyser. Download from : https://www.ibm.com/support/pages/ibm-thread-and-monitor-dump-analyzer-java-tmda
+alias open-tdump='java -jar /Users/username/Downloads/tools/jca4616.jar'
+
+# list listening ports
+alias list-ports='lsof -i -P -n | grep LISTEN'
+
+# kill process
+alias down='kill -9'
+
