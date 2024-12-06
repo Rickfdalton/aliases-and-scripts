@@ -12,8 +12,9 @@ Creates directories for WSO2 issues and opens them in the file manager.
 
 **Usage:**
 
-wso2-init --apim-4.2.0
-open-issue ISSUE-23
+`wso2-init --apim-4.2.0`
+
+`open-issue ISSUE-23`
 
 
 ## Setup Instructions
