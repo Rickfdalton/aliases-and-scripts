@@ -1,31 +1,42 @@
-# If you run the command open-issue ISSUE-1234, the function will:
-# Check if the folder /Users/username/workstation/Tickets/ISSUE exists, and create it if necessary.
-# Create a subfolder /Users/username/workstation/Tickets/ISSUE/ISSUE-1234.
-# Navigate into that subfolder and open it using the appropriate file manager.
+#!/bin/bash
+# This script creates a folder structure for an issue and opens the corresponding folder in a file manager.
+# Usage: open-issue ISSUE-1234
 
-local base_folder="/Users/username/workstation/Tickets/"  # Set your base folder path here
+# Set the base folder path here
+BASE_FOLDER="/Users/username/Desktop/TICKETS"
 
-local issue_name="$1"
-local issue_folder="${base_folder}/${issue_name%%-*}"  # Extracts the portion before the first hyphen
-local subfolder="${issue_folder}/${issue_name}"
-
-if [ ! -d "$issue_folder" ]; then
-    mkdir -p "$issue_folder"
+# Check if the issue name is provided as an argument
+if [ -z "$1" ]; then
+    echo "Usage: $0 ISSUE-1234"
+    exit 1
 fi
 
-cd "$issue_folder" || return 1
+# Extract issue details
+ISSUE_NAME="$1"
+ISSUE_FOLDER="${BASE_FOLDER}/${ISSUE_NAME%%-*}"  # Extracts the portion before the first hyphen
+SUBFOLDER="${ISSUE_FOLDER}/${ISSUE_NAME}"
 
-if [ ! -d "$subfolder" ]; then
-    mkdir -p "$subfolder"
+# Create the main issue folder if it doesn't exist
+if [ ! -d "$ISSUE_FOLDER" ]; then
+    mkdir -p "$ISSUE_FOLDER"
 fi
 
-cd "$subfolder" || return 1
+# Create the subfolder if it doesn't exist
+if [ ! -d "$SUBFOLDER" ]; then
+    mkdir -p "$SUBFOLDER"
+fi
 
-# Open the folder using your preferred file manager, e.g., 'open' for macOS or 'xdg-open' for Linux
+# Navigate to the subfolder
+cd "$SUBFOLDER" || {
+    echo "Failed to navigate to $SUBFOLDER"
+    exit 1
+}
+
+# Open the folder using the appropriate file manager
 if command -v open &> /dev/null; then
     open .
 elif command -v xdg-open &> /dev/null; then
     xdg-open .
 else
-    echo "Unable to open file manager. Please open the folder manually: $subfolder"
+    echo "Unable to open file manager. Please open the folder manually: $SUBFOLDER"
 fi
