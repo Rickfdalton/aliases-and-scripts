@@ -20,6 +20,7 @@ switch_java_home() {
             return 1
             ;;
     esac
+    export PATH=$JAVA_HOME/bin:$PATH
     echo "JAVA_HOME switched to $JAVA_HOME"
 }
 
